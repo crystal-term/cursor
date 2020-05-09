@@ -67,6 +67,7 @@ The purpose of this library is to help move the terminal cursor around and manip
 **Term::Cursor** is just a module hence you can reference it for later like so:
 
 ```crystal
+require "term-cursor"
 cursor = Term::Cursor
 ```
 
