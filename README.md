@@ -56,7 +56,7 @@ The purpose of this library is to help move the terminal cursor around and manip
 
    ```yaml
    dependencies:
-     cursor:
+     term-cursor:
        github: crystal-term/cursor
    ```
 
