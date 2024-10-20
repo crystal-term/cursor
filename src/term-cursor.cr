@@ -28,14 +28,20 @@ module Term
 
     # Save current position
     def save
-      # TODO: Should be CSI + "s" on Windows
-      ESC + "7"
+      {% if flag?(:windows) %}
+        CSI + "s"
+      {% else %}
+        ESC + "7"
+      {% end %}
     end
 
     # Restore cursor position
     def restore
-      # TODO: Should be CSI + "u" on Windows
-      ESC + "8"
+      {% if flag?(:windows) %}
+        CSI + "u"
+      {% else %}
+        ESC + "8"
+      {% end %}
     end
 
     # Query cursor current position
@@ -44,9 +50,11 @@ module Term
     end
 
     # Set the cursor absolute position
-    def move_to(row : Int32? = nil, column : Int32? = nil)
+    def move_to(row : Int32? = nil, column : Int32? = nil) : String
       return CSI + "H" if row.nil? && column.nil?
-      CSI + "#{(column || 0) + 1};#{(row || 0) + 1}H"
+      row = row.try(&.abs) || 0
+      column = column.try(&.abs) || 0
+      CSI + "#{column + 1};#{row + 1}H"
     end
 
     # Move cursor relative to its current position
@@ -173,6 +181,19 @@ module Term
     # Scroll display down one line
     def scroll_down
       ESC + "D"
+    end
+
+    # Get the current cursor position
+    # Returns a tuple with {row, column}
+    def get_position(input = STDIN, output = STDOUT) : {Int32, Int32}
+      output.print current
+      output.flush
+      response = input.raw &.read_line
+      if response =~ /\e\[(\d+);(\d+)R/
+        {$1.to_i - 1, $2.to_i - 1}
+      else
+        {0, 0}
+      end
     end
   end
 end
