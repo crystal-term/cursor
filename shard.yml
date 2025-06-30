@@ -7,8 +7,8 @@ authors:
 development_dependencies:
   spectator:
     gitlab: arctic-fox/spectator
-    branch: master
+    version: ~> 0.12.0
 
-crystal: 0.33.0
+crystal: ">= 1.0.0"
 
 license: MIT
