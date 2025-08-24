@@ -1,14 +1,2 @@
 name: term-cursor
-version: 0.2.0
-
-authors:
-  - Chris Watson <cawatson1993@gmail.com>
-
-development_dependencies:
-  spectator:
-    gitlab: arctic-fox/spectator
-    version: ~> 0.12.0
-
-crystal: ">= 1.0.0"
-
-license: MIT
+version: 0.3.0
