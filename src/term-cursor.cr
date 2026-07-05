@@ -2,11 +2,12 @@ module Term
   module Cursor
     extend self
 
-    ESC = "\e"
-    CSI = "\e["
-    DEC_RST  = "l"
-    DEC_SET  = "h"
-    DEC_TCEM = "?25"
+    ESC           = "\e"
+    CSI           = "\e["
+    DEC_RST       = "l"
+    DEC_SET       = "h"
+    DEC_TCEM      = "?25"
+    ANSI_SEQUENCE = /\e\[[\x30-\x3f]*[\x20-\x2f]*[\x40-\x7e]|\e./
 
     # Make cursor visible
     def show
@@ -60,7 +61,7 @@ module Term
     # Move cursor relative to its current position
     def move(x, y)
       (x < 0 ? backward(-x) : (x > 0 ? forward(x) : "")) +
-      (y < 0 ? down(-y) : (y > 0 ? up(y) : ""))
+        (y < 0 ? down(-y) : (y > 0 ? up(y) : ""))
     end
 
     # Move cursor up by n
@@ -194,6 +195,11 @@ module Term
       else
         {0, 0}
       end
+    end
+
+    # Remove terminal escape sequences from display text.
+    def strip_ansi(text : String) : String
+      text.gsub(ANSI_SEQUENCE, "")
     end
   end
 end
