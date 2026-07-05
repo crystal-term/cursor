@@ -54,7 +54,7 @@ module Term
       return CSI + "H" if row.nil? && column.nil?
       row = row.try(&.abs) || 0
       column = column.try(&.abs) || 0
-      CSI + "#{column + 1};#{row + 1}H"
+      CSI + "#{row + 1};#{column + 1}H"
     end
 
     # Move cursor relative to its current position
